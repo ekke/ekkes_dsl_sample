@@ -1,0 +1,108 @@
+package org.ekkescorner.dsl.qobject.sample.data {
+	
+	import org.lunifera.dsl.ext.cpp.qt.datatypes.*;
+	import org.lunifera.dsl.ext.cpp.qt.lib.types.annotation.*;
+	
+	dto Order {
+		var QString uuid;
+		domainKey int nr;
+		var bool expressOrder;
+		var QString[1] title;
+		@DateFormatString("yyyy-MM-dd")
+		var Date[1] orderDate;
+		@ForeignPropertyName("STATUS")
+		var OrderState state;
+		
+		transient int processingState;
+		
+		ref cascade Item[1..*] positions opposite order; 
+		ref cascade Info[0..1] info opposite order;
+		
+		ref lazy Topic[0..1] topicId;
+		ref lazy Xtras[0..1] extras;
+		
+		ref lazy Customer[1] customerId;
+		ref lazy Department[1] depId;	
+
+		var Tag[0..*] tags;
+		var QString[0..*] domains;
+	}
+	
+	// @EnumValues("0;0,1,2,3;-1") 
+	enum OrderState {
+		NEW, CONFIRMED, DELIVERED, CLOSED
+	}
+	
+	dto Item {
+		domainKey QString uuid;
+		var int[1] posNr;
+		var QString[1] name;
+		var double[1] quantity;
+		
+		ref Order order opposite positions;
+		ref cascade SubItem[0..*] subItems opposite item;
+	}
+	
+	dto SubItem {
+		domainKey QString uuid;
+		var int[1] subPosNr;
+		var QString[1] description;
+		var QString[1] barcode;
+		
+		ref Item item opposite subItems;
+	}
+	
+	dto Customer {
+		var QString uuid;
+		domainKey int id;
+		@Index("")
+		var QString companyName;
+		var GeoCoordinate coordinate;
+		var GeoAddress geoAddress;
+	}
+	
+	dto Info {
+		domainKey QString uuid;
+		var QString remarks;
+		
+		ref Order order opposite info;
+	}
+	
+	dto Topic {
+		var QString uuid;
+		domainKey int id;
+		var QString classification;
+		
+		ref Topic[0..*] subTopic;
+		ref Topic[0..1] parentTopic;
+	}
+	
+	@CachePolicy("-R-")
+	dto Department {
+		var QString uuid;
+		domainKey int id;
+		var QString name;
+		
+		ref Department[0..1] parentDep opposite children;
+		ref cascade Department[0..*] children opposite parentDep;
+	}
+	
+	@CachePolicy("-R-")
+	@SqlCache("")
+	dto Tag {
+		var QString uuid;
+		var QString name;
+		var int value;
+		var QString color;
+	}
+	
+	dto Xtras {
+		var QString uuid;
+		domainKey int id;
+		var QString name;
+		
+		var QString[0..*] text;
+		var int[0..*] values;
+	}
+
+}

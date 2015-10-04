@@ -14,8 +14,8 @@ class Department: public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged FINAL)
+	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
 	Q_PROPERTY(Department* parentDep READ parentDep)
 
@@ -39,10 +39,10 @@ public:
 	QVariantMap toForeignMap();
 	QVariantMap toCacheMap();
 
-	QString uuid() const;
-	void setUuid(QString uuid);
 	int id() const;
 	void setId(int id);
+	QString uuid() const;
+	void setUuid(QString uuid);
 	QString name() const;
 	void setName(QString name);
 	Department* parentDep() const;
@@ -92,8 +92,8 @@ public:
 
 	Q_SIGNALS:
 
-	void uuidChanged(QString uuid);
 	void idChanged(int id);
+	void uuidChanged(QString uuid);
 	void nameChanged(QString name);
 	// no SIGNAL parentDep is only convenience way to get the parent
 	void childrenChanged(QList<Department*> children);
@@ -105,8 +105,8 @@ public:
 
 private:
 
-	QString mUuid;
 	int mId;
+	QString mUuid;
 	QString mName;
 	// no MEMBER mParentDep it's the parent
 	QList<Department*> mChildren;

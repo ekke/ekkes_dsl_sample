@@ -3,7 +3,6 @@
 #include <quuid.h>
 
 // keys of QVariantMap used in this APP
-static const QString uuidKey = "uuid";
 static const QString nrKey = "nr";
 static const QString expressOrderKey = "expressOrder";
 static const QString titleKey = "title";
@@ -20,12 +19,11 @@ static const QString tagsKey = "tags";
 static const QString domainsKey = "domains";
 
 // keys used from Server API etc
-static const QString uuidForeignKey = "uuid";
 static const QString nrForeignKey = "nr";
 static const QString expressOrderForeignKey = "expressOrder";
 static const QString titleForeignKey = "title";
 static const QString orderDateForeignKey = "orderDate";
-static const QString stateForeignKey = "STATUS";
+static const QString stateForeignKey = "state";
 static const QString processingStateForeignKey = "processingState";
 static const QString positionsForeignKey = "positions";
 static const QString infoForeignKey = "info";
@@ -40,7 +38,7 @@ static const QString domainsForeignKey = "domains";
  * Default Constructor if Order not initialized from QVariantMap
  */
 Order::Order(QObject *parent) :
-        QObject(parent), mUuid(""), mNr(-1), mExpressOrder(false), mTitle(""), mProcessingState(0)
+        QObject(parent), mNr(-1), mExpressOrder(false), mTitle(""), mProcessingState(0)
 {
 	// set Types of DataObject* to NULL:
 	mInfo = 0;
@@ -96,12 +94,6 @@ bool Order::isAllResolved()
  */
 void Order::fillFromMap(const QVariantMap& orderMap)
 {
-	mUuid = orderMap.value(uuidKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mNr = orderMap.value(nrKey).toInt();
 	mExpressOrder = orderMap.value(expressOrderKey).toBool();
 	mTitle = orderMap.value(titleKey).toString();
@@ -198,12 +190,6 @@ void Order::fillFromMap(const QVariantMap& orderMap)
  */
 void Order::fillFromForeignMap(const QVariantMap& orderMap)
 {
-	mUuid = orderMap.value(uuidForeignKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mNr = orderMap.value(nrForeignKey).toInt();
 	mExpressOrder = orderMap.value(expressOrderForeignKey).toBool();
 	mTitle = orderMap.value(titleForeignKey).toString();
@@ -300,12 +286,6 @@ void Order::fillFromForeignMap(const QVariantMap& orderMap)
  */
 void Order::fillFromCacheMap(const QVariantMap& orderMap)
 {
-	mUuid = orderMap.value(uuidKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mNr = orderMap.value(nrKey).toInt();
 	mExpressOrder = orderMap.value(expressOrderKey).toBool();
 	mTitle = orderMap.value(titleKey).toString();
@@ -392,9 +372,6 @@ void Order::fillFromCacheMap(const QVariantMap& orderMap)
 
 void Order::prepareNew()
 {
-	mUuid = QUuid::createUuid().toString();
-	mUuid = mUuid.right(mUuid.length() - 1);
-	mUuid = mUuid.left(mUuid.length() - 1);
 }
 
 /*
@@ -402,9 +379,6 @@ void Order::prepareNew()
  */
 bool Order::isValid()
 {
-	if (mUuid.isNull() || mUuid.isEmpty()) {
-		return false;
-	}
 	if (mNr == -1) {
 		return false;
 	}
@@ -463,7 +437,6 @@ QVariantMap Order::toMap()
 		}
 	}
 	orderMap.insert(tagsKey, mTagsKeys);
-	orderMap.insert(uuidKey, mUuid);
 	orderMap.insert(nrKey, mNr);
 	orderMap.insert(expressOrderKey, mExpressOrder);
 	orderMap.insert(titleKey, mTitle);
@@ -519,7 +492,6 @@ QVariantMap Order::toForeignMap()
 		}
 	}
 	orderMap.insert(tagsKey, mTagsKeys);
-	orderMap.insert(uuidForeignKey, mUuid);
 	orderMap.insert(nrForeignKey, mNr);
 	orderMap.insert(expressOrderForeignKey, mExpressOrder);
 	orderMap.insert(titleForeignKey, mTitle);
@@ -577,7 +549,6 @@ QVariantMap Order::toCacheMap()
 		}
 	}
 	orderMap.insert(tagsKey, mTagsKeys);
-	orderMap.insert(uuidKey, mUuid);
 	orderMap.insert(nrKey, mNr);
 	orderMap.insert(expressOrderKey, mExpressOrder);
 	orderMap.insert(titleKey, mTitle);
@@ -864,20 +835,6 @@ void Order::resolveDepIdAsDataObject(Department* department)
 void Order::markDepIdAsInvalid()
 {
     mDepIdInvalid = true;
-}
-// ATT 
-// Optional: uuid
-QString Order::uuid() const
-{
-	return mUuid;
-}
-
-void Order::setUuid(QString uuid)
-{
-	if (uuid != mUuid) {
-		mUuid = uuid;
-		emit uuidChanged(uuid);
-	}
 }
 // ATT 
 // Mandatory: nr

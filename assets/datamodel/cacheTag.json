@@ -1,0 +1,17 @@
+[
+	{
+		"name" : "alpha",
+		"value" : 42,
+		"color" : "pink"
+	},
+	{
+		"name" : "beta",
+		"value" : 4711,
+		"color" : "green"
+	},
+	{
+		"name" : "gamma",
+		"value" : 1234,
+		"color" : "red"
+	}
+]

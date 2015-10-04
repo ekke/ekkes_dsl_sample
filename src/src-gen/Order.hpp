@@ -22,7 +22,6 @@ class Order: public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(int nr READ nr WRITE setNr NOTIFY nrChanged FINAL)
 	Q_PROPERTY(bool expressOrder READ expressOrder WRITE setExpressOrder NOTIFY expressOrderChanged FINAL)
 	Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged FINAL)
@@ -69,8 +68,6 @@ public:
 	QVariantMap toForeignMap();
 	QVariantMap toCacheMap();
 
-	QString uuid() const;
-	void setUuid(QString uuid);
 	int nr() const;
 	void setNr(int nr);
 	bool expressOrder() const;
@@ -265,7 +262,6 @@ public:
 
 	Q_SIGNALS:
 
-	void uuidChanged(QString uuid);
 	void nrChanged(int nr);
 	void expressOrderChanged(bool expressOrder);
 	void titleChanged(QString title);
@@ -300,7 +296,6 @@ public:
 
 private:
 
-	QString mUuid;
 	int mNr;
 	bool mExpressOrder;
 	QString mTitle;

@@ -19,7 +19,7 @@
 
 #include <QObject>
 
-#include "DataManager.hpp"
+#include "src-gen/DataManager.hpp"
 
 namespace bb
 {

@@ -13,7 +13,6 @@ class Xtras: public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged FINAL)
 	Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
 
@@ -38,8 +37,6 @@ public:
 	QVariantMap toForeignMap();
 	QVariantMap toCacheMap();
 
-	QString uuid() const;
-	void setUuid(QString uuid);
 	int id() const;
 	void setId(int id);
 	QString name() const;
@@ -79,7 +76,6 @@ public:
 
 	Q_SIGNALS:
 
-	void uuidChanged(QString uuid);
 	void idChanged(int id);
 	void nameChanged(QString name);
 	void textStringListChanged(QStringList text);
@@ -92,7 +88,6 @@ public:
 
 private:
 
-	QString mUuid;
 	int mId;
 	QString mName;
 	QStringList mTextStringList;

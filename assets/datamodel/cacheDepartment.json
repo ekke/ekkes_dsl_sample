@@ -1,0 +1,35 @@
+[
+	{
+		"id":1,
+		"name":"Sales",
+		"children":[
+			{
+				"id":2,
+				"name":"Sales Europe",
+				"children":[
+					{
+						"id":5,
+						"name":"Sales Germany"
+					},
+					{
+						"id":6,
+						"name":"Sales Italy"
+					}
+				]
+			},
+			{
+				"id":3,
+				"name":"Sales USA"
+			},
+			{
+				"id":4,
+				"name":"Sales Asia"
+			}
+		]
+	},
+	{
+		"id":20,
+		"name":"Administration"
+	}
+
+]

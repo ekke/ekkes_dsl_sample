@@ -481,7 +481,7 @@ void DataManager::clearOrderProperty(
         for (int i = 0; i < dataManager->mAllOrder.size(); ++i) {
             Order* order;
             order = (Order*) dataManager->mAllOrder.at(i);
-			emit dataManager->deletedFromAllOrderByUuid(order->uuid());
+			emit dataManager->deletedFromAllOrderByNr(order->nr());
 			emit dataManager->deletedFromAllOrder(order);
             order->deleteLater();
             order = 0;
@@ -501,7 +501,7 @@ void DataManager::deleteOrder()
     for (int i = 0; i < mAllOrder.size(); ++i) {
         Order* order;
         order = (Order*) mAllOrder.at(i);
-        emit deletedFromAllOrderByUuid(order->uuid());
+        emit deletedFromAllOrderByNr(order->nr());
 		emit deletedFromAllOrder(order);
         order->deleteLater();
         order = 0;
@@ -568,33 +568,13 @@ bool DataManager::deleteOrder(Order* order)
     if (!ok) {
         return ok;
     }
-    emit deletedFromAllOrderByUuid(order->uuid());
+    emit deletedFromAllOrderByNr(order->nr());
     emit deletedFromAllOrder(order);
     order->deleteLater();
     order = 0;
     return ok;
 }
 
-bool DataManager::deleteOrderByUuid(const QString& uuid)
-{
-    if (uuid.isNull() || uuid.isEmpty()) {
-        qDebug() << "cannot delete Order from empty uuid";
-        return false;
-    }
-    for (int i = 0; i < mAllOrder.size(); ++i) {
-        Order* order;
-        order = (Order*) mAllOrder.at(i);
-        if (order->uuid() == uuid) {
-            mAllOrder.removeAt(i);
-            emit deletedFromAllOrderByUuid(uuid);
-            emit deletedFromAllOrder(order);
-            order->deleteLater();
-            order = 0;
-            return true;
-        }
-    }
-    return false;
-}
 
 bool DataManager::deleteOrderByNr(const int& nr)
 {
@@ -694,21 +674,6 @@ void DataManager::insertItemIntoOrderDataModel(QString objectName, Order* listIt
         return;
     }
     qDebug() << "no DataModel found for " << objectName;
-}
-Order* DataManager::findOrderByUuid(const QString& uuid){
-    if (uuid.isNull() || uuid.isEmpty()) {
-        qDebug() << "cannot find Order from empty uuid";
-        return 0;
-    }
-    for (int i = 0; i < mAllOrder.size(); ++i) {
-        Order* order;
-        order = (Order*)mAllOrder.at(i);
-        if(order->uuid() == uuid){
-            return order;
-        }
-    }
-    qDebug() << "no Order found for uuid " << uuid;
-    return 0;
 }
 
 // nr is DomainKey
@@ -870,7 +835,7 @@ void DataManager::clearCustomerProperty(
         for (int i = 0; i < dataManager->mAllCustomer.size(); ++i) {
             Customer* customer;
             customer = (Customer*) dataManager->mAllCustomer.at(i);
-			emit dataManager->deletedFromAllCustomerByUuid(customer->uuid());
+			emit dataManager->deletedFromAllCustomerById(customer->id());
 			emit dataManager->deletedFromAllCustomer(customer);
             customer->deleteLater();
             customer = 0;
@@ -890,7 +855,7 @@ void DataManager::deleteCustomer()
     for (int i = 0; i < mAllCustomer.size(); ++i) {
         Customer* customer;
         customer = (Customer*) mAllCustomer.at(i);
-        emit deletedFromAllCustomerByUuid(customer->uuid());
+        emit deletedFromAllCustomerById(customer->id());
 		emit deletedFromAllCustomer(customer);
         customer->deleteLater();
         customer = 0;
@@ -957,33 +922,13 @@ bool DataManager::deleteCustomer(Customer* customer)
     if (!ok) {
         return ok;
     }
-    emit deletedFromAllCustomerByUuid(customer->uuid());
+    emit deletedFromAllCustomerById(customer->id());
     emit deletedFromAllCustomer(customer);
     customer->deleteLater();
     customer = 0;
     return ok;
 }
 
-bool DataManager::deleteCustomerByUuid(const QString& uuid)
-{
-    if (uuid.isNull() || uuid.isEmpty()) {
-        qDebug() << "cannot delete Customer from empty uuid";
-        return false;
-    }
-    for (int i = 0; i < mAllCustomer.size(); ++i) {
-        Customer* customer;
-        customer = (Customer*) mAllCustomer.at(i);
-        if (customer->uuid() == uuid) {
-            mAllCustomer.removeAt(i);
-            emit deletedFromAllCustomerByUuid(uuid);
-            emit deletedFromAllCustomer(customer);
-            customer->deleteLater();
-            customer = 0;
-            return true;
-        }
-    }
-    return false;
-}
 
 bool DataManager::deleteCustomerById(const int& id)
 {
@@ -1110,21 +1055,6 @@ void DataManager::fillCustomerDataModelByCompanyName(QString objectName, const Q
         }
     }
     qDebug() << "NO GRP DATA FOUND Customer for " << objectName;
-}
-Customer* DataManager::findCustomerByUuid(const QString& uuid){
-    if (uuid.isNull() || uuid.isEmpty()) {
-        qDebug() << "cannot find Customer from empty uuid";
-        return 0;
-    }
-    for (int i = 0; i < mAllCustomer.size(); ++i) {
-        Customer* customer;
-        customer = (Customer*)mAllCustomer.at(i);
-        if(customer->uuid() == uuid){
-            return customer;
-        }
-    }
-    qDebug() << "no Customer found for uuid " << uuid;
-    return 0;
 }
 
 // nr is DomainKey
@@ -2585,7 +2515,7 @@ void DataManager::clearXtrasProperty(
         for (int i = 0; i < dataManager->mAllXtras.size(); ++i) {
             Xtras* xtras;
             xtras = (Xtras*) dataManager->mAllXtras.at(i);
-			emit dataManager->deletedFromAllXtrasByUuid(xtras->uuid());
+			emit dataManager->deletedFromAllXtrasById(xtras->id());
 			emit dataManager->deletedFromAllXtras(xtras);
             xtras->deleteLater();
             xtras = 0;
@@ -2605,7 +2535,7 @@ void DataManager::deleteXtras()
     for (int i = 0; i < mAllXtras.size(); ++i) {
         Xtras* xtras;
         xtras = (Xtras*) mAllXtras.at(i);
-        emit deletedFromAllXtrasByUuid(xtras->uuid());
+        emit deletedFromAllXtrasById(xtras->id());
 		emit deletedFromAllXtras(xtras);
         xtras->deleteLater();
         xtras = 0;
@@ -2672,33 +2602,13 @@ bool DataManager::deleteXtras(Xtras* xtras)
     if (!ok) {
         return ok;
     }
-    emit deletedFromAllXtrasByUuid(xtras->uuid());
+    emit deletedFromAllXtrasById(xtras->id());
     emit deletedFromAllXtras(xtras);
     xtras->deleteLater();
     xtras = 0;
     return ok;
 }
 
-bool DataManager::deleteXtrasByUuid(const QString& uuid)
-{
-    if (uuid.isNull() || uuid.isEmpty()) {
-        qDebug() << "cannot delete Xtras from empty uuid";
-        return false;
-    }
-    for (int i = 0; i < mAllXtras.size(); ++i) {
-        Xtras* xtras;
-        xtras = (Xtras*) mAllXtras.at(i);
-        if (xtras->uuid() == uuid) {
-            mAllXtras.removeAt(i);
-            emit deletedFromAllXtrasByUuid(uuid);
-            emit deletedFromAllXtras(xtras);
-            xtras->deleteLater();
-            xtras = 0;
-            return true;
-        }
-    }
-    return false;
-}
 
 bool DataManager::deleteXtrasById(const int& id)
 {
@@ -2798,21 +2708,6 @@ void DataManager::insertItemIntoXtrasDataModel(QString objectName, Xtras* listIt
         return;
     }
     qDebug() << "no DataModel found for " << objectName;
-}
-Xtras* DataManager::findXtrasByUuid(const QString& uuid){
-    if (uuid.isNull() || uuid.isEmpty()) {
-        qDebug() << "cannot find Xtras from empty uuid";
-        return 0;
-    }
-    for (int i = 0; i < mAllXtras.size(); ++i) {
-        Xtras* xtras;
-        xtras = (Xtras*)mAllXtras.at(i);
-        if(xtras->uuid() == uuid){
-            return xtras;
-        }
-    }
-    qDebug() << "no Xtras found for uuid " << uuid;
-    return 0;
 }
 
 // nr is DomainKey

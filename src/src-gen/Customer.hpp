@@ -7,8 +7,8 @@
 // #include <QtLocationSubset/QGeoAddress>
 
 
-#include "GeoCoordinate.hpp"
-#include "GeoAddress.hpp"
+#include "../GeoCoordinate.hpp"
+#include "../GeoAddress.hpp"
 
 // using namespace QtMobilitySubset;	
 
@@ -16,7 +16,6 @@ class Customer: public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged FINAL)
 	Q_PROPERTY(QString companyName READ companyName WRITE setCompanyName NOTIFY companyNameChanged FINAL)
 	Q_PROPERTY(GeoCoordinate* coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged FINAL)
@@ -40,8 +39,6 @@ public:
 	QVariantMap toForeignMap();
 	QVariantMap toCacheMap();
 
-	QString uuid() const;
-	void setUuid(QString uuid);
 	int id() const;
 	void setId(int id);
 	QString companyName() const;
@@ -69,7 +66,6 @@ public:
 
 	Q_SIGNALS:
 
-	void uuidChanged(QString uuid);
 	void idChanged(int id);
 	void companyNameChanged(QString companyName);
 	void coordinateChanged(GeoCoordinate* coordinate);
@@ -80,7 +76,6 @@ public:
 
 private:
 
-	QString mUuid;
 	int mId;
 	QString mCompanyName;
 	GeoCoordinate* mCoordinate;

@@ -4,15 +4,15 @@
 #include "Department.hpp"
 
 // keys of QVariantMap used in this APP
-static const QString uuidKey = "uuid";
 static const QString idKey = "id";
+static const QString uuidKey = "uuid";
 static const QString nameKey = "name";
 // no key for parentDep
 static const QString childrenKey = "children";
 
 // keys used from Server API etc
-static const QString uuidForeignKey = "uuid";
 static const QString idForeignKey = "id";
+static const QString uuidForeignKey = "uuid";
 static const QString nameForeignKey = "name";
 // no key for parentDep
 static const QString childrenForeignKey = "children";
@@ -21,7 +21,7 @@ static const QString childrenForeignKey = "children";
  * Default Constructor if Department not initialized from QVariantMap
  */
 Department::Department(QObject *parent) :
-        QObject(parent), mUuid(""), mId(-1), mName("")
+        QObject(parent), mId(-1), mUuid(""), mName("")
 {
 }
 
@@ -34,13 +34,13 @@ Department::Department(QObject *parent) :
  */
 void Department::fillFromMap(const QVariantMap& departmentMap)
 {
+	mId = departmentMap.value(idKey).toInt();
 	mUuid = departmentMap.value(uuidKey).toString();
 	if (mUuid.isEmpty()) {
 		mUuid = QUuid::createUuid().toString();
 		mUuid = mUuid.right(mUuid.length() - 1);
 		mUuid = mUuid.left(mUuid.length() - 1);
 	}	
-	mId = departmentMap.value(idKey).toInt();
 	mName = departmentMap.value(nameKey).toString();
 	// mParentDep is parent (Department* containing Department)
 	// mChildren is List of Department*
@@ -65,13 +65,13 @@ void Department::fillFromMap(const QVariantMap& departmentMap)
  */
 void Department::fillFromForeignMap(const QVariantMap& departmentMap)
 {
+	mId = departmentMap.value(idForeignKey).toInt();
 	mUuid = departmentMap.value(uuidForeignKey).toString();
 	if (mUuid.isEmpty()) {
 		mUuid = QUuid::createUuid().toString();
 		mUuid = mUuid.right(mUuid.length() - 1);
 		mUuid = mUuid.left(mUuid.length() - 1);
 	}	
-	mId = departmentMap.value(idForeignKey).toInt();
 	mName = departmentMap.value(nameForeignKey).toString();
 	// mParentDep is parent (Department* containing Department)
 	// mChildren is List of Department*
@@ -96,13 +96,13 @@ void Department::fillFromForeignMap(const QVariantMap& departmentMap)
  */
 void Department::fillFromCacheMap(const QVariantMap& departmentMap)
 {
+	mId = departmentMap.value(idKey).toInt();
 	mUuid = departmentMap.value(uuidKey).toString();
 	if (mUuid.isEmpty()) {
 		mUuid = QUuid::createUuid().toString();
 		mUuid = mUuid.right(mUuid.length() - 1);
 		mUuid = mUuid.left(mUuid.length() - 1);
 	}	
-	mId = departmentMap.value(idKey).toInt();
 	mName = departmentMap.value(nameKey).toString();
 	// mParentDep is parent (Department* containing Department)
 	// mChildren is List of Department*
@@ -131,10 +131,10 @@ void Department::prepareNew()
  */
 bool Department::isValid()
 {
-	if (mUuid.isNull() || mUuid.isEmpty()) {
+	if (mId == -1) {
 		return false;
 	}
-	if (mId == -1) {
+	if (mUuid.isNull() || mUuid.isEmpty()) {
 		return false;
 	}
 	return true;
@@ -148,8 +148,8 @@ bool Department::isValid()
 QVariantMap Department::toMap()
 {
 	QVariantMap departmentMap;
-	departmentMap.insert(uuidKey, mUuid);
 	departmentMap.insert(idKey, mId);
+	departmentMap.insert(uuidKey, mUuid);
 	departmentMap.insert(nameKey, mName);
 	// mParentDep points to Department* containing Department
 	// mChildren points to Department*
@@ -165,8 +165,8 @@ QVariantMap Department::toMap()
 QVariantMap Department::toForeignMap()
 {
 	QVariantMap departmentMap;
-	departmentMap.insert(uuidForeignKey, mUuid);
 	departmentMap.insert(idForeignKey, mId);
+	departmentMap.insert(uuidForeignKey, mUuid);
 	departmentMap.insert(nameForeignKey, mName);
 	// mParentDep points to Department* containing Department
 	// mChildren points to Department*
@@ -187,20 +187,6 @@ QVariantMap Department::toCacheMap()
 	return toMap();
 }
 // ATT 
-// Optional: uuid
-QString Department::uuid() const
-{
-	return mUuid;
-}
-
-void Department::setUuid(QString uuid)
-{
-	if (uuid != mUuid) {
-		mUuid = uuid;
-		emit uuidChanged(uuid);
-	}
-}
-// ATT 
 // Mandatory: id
 // Domain KEY: id
 int Department::id() const
@@ -213,6 +199,20 @@ void Department::setId(int id)
 	if (id != mId) {
 		mId = id;
 		emit idChanged(id);
+	}
+}
+// ATT 
+// Optional: uuid
+QString Department::uuid() const
+{
+	return mUuid;
+}
+
+void Department::setUuid(QString uuid)
+{
+	if (uuid != mUuid) {
+		mUuid = uuid;
+		emit uuidChanged(uuid);
 	}
 }
 // ATT 

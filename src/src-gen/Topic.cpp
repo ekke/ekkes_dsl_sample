@@ -3,15 +3,15 @@
 #include <quuid.h>
 
 // keys of QVariantMap used in this APP
-static const QString uuidKey = "uuid";
 static const QString idKey = "id";
+static const QString uuidKey = "uuid";
 static const QString classificationKey = "classification";
 static const QString subTopicKey = "subTopic";
 static const QString parentTopicKey = "parentTopic";
 
 // keys used from Server API etc
-static const QString uuidForeignKey = "uuid";
 static const QString idForeignKey = "id";
+static const QString uuidForeignKey = "uuid";
 static const QString classificationForeignKey = "classification";
 static const QString subTopicForeignKey = "subTopic";
 static const QString parentTopicForeignKey = "parentTopic";
@@ -20,7 +20,7 @@ static const QString parentTopicForeignKey = "parentTopic";
  * Default Constructor if Topic not initialized from QVariantMap
  */
 Topic::Topic(QObject *parent) :
-        QObject(parent), mUuid(""), mId(-1), mClassification("")
+        QObject(parent), mId(-1), mUuid(""), mClassification("")
 {
 	// set Types of DataObject* to NULL:
 	mParentTopic = 0;
@@ -35,13 +35,13 @@ Topic::Topic(QObject *parent) :
  */
 void Topic::fillFromMap(const QVariantMap& topicMap)
 {
+	mId = topicMap.value(idKey).toInt();
 	mUuid = topicMap.value(uuidKey).toString();
 	if (mUuid.isEmpty()) {
 		mUuid = QUuid::createUuid().toString();
 		mUuid = mUuid.right(mUuid.length() - 1);
 		mUuid = mUuid.left(mUuid.length() - 1);
 	}	
-	mId = topicMap.value(idKey).toInt();
 	mClassification = topicMap.value(classificationKey).toString();
 	// mParentTopic points to Topic*
 	if (topicMap.contains(parentTopicKey)) {
@@ -76,13 +76,13 @@ void Topic::fillFromMap(const QVariantMap& topicMap)
  */
 void Topic::fillFromForeignMap(const QVariantMap& topicMap)
 {
+	mId = topicMap.value(idForeignKey).toInt();
 	mUuid = topicMap.value(uuidForeignKey).toString();
 	if (mUuid.isEmpty()) {
 		mUuid = QUuid::createUuid().toString();
 		mUuid = mUuid.right(mUuid.length() - 1);
 		mUuid = mUuid.left(mUuid.length() - 1);
 	}	
-	mId = topicMap.value(idForeignKey).toInt();
 	mClassification = topicMap.value(classificationForeignKey).toString();
 	// mParentTopic points to Topic*
 	if (topicMap.contains(parentTopicForeignKey)) {
@@ -117,13 +117,13 @@ void Topic::fillFromForeignMap(const QVariantMap& topicMap)
  */
 void Topic::fillFromCacheMap(const QVariantMap& topicMap)
 {
+	mId = topicMap.value(idKey).toInt();
 	mUuid = topicMap.value(uuidKey).toString();
 	if (mUuid.isEmpty()) {
 		mUuid = QUuid::createUuid().toString();
 		mUuid = mUuid.right(mUuid.length() - 1);
 		mUuid = mUuid.left(mUuid.length() - 1);
 	}	
-	mId = topicMap.value(idKey).toInt();
 	mClassification = topicMap.value(classificationKey).toString();
 	// mParentTopic points to Topic*
 	if (topicMap.contains(parentTopicKey)) {
@@ -161,10 +161,10 @@ void Topic::prepareNew()
  */
 bool Topic::isValid()
 {
-	if (mUuid.isNull() || mUuid.isEmpty()) {
+	if (mId == -1) {
 		return false;
 	}
-	if (mId == -1) {
+	if (mUuid.isNull() || mUuid.isEmpty()) {
 		return false;
 	}
 	return true;
@@ -178,8 +178,8 @@ bool Topic::isValid()
 QVariantMap Topic::toMap()
 {
 	QVariantMap topicMap;
-	topicMap.insert(uuidKey, mUuid);
 	topicMap.insert(idKey, mId);
+	topicMap.insert(uuidKey, mUuid);
 	topicMap.insert(classificationKey, mClassification);
 	// mSubTopic points to Topic*
 	topicMap.insert(subTopicKey, subTopicAsQVariantList());
@@ -198,8 +198,8 @@ QVariantMap Topic::toMap()
 QVariantMap Topic::toForeignMap()
 {
 	QVariantMap topicMap;
-	topicMap.insert(uuidForeignKey, mUuid);
 	topicMap.insert(idForeignKey, mId);
+	topicMap.insert(uuidForeignKey, mUuid);
 	topicMap.insert(classificationForeignKey, mClassification);
 	// mSubTopic points to Topic*
 	topicMap.insert(subTopicForeignKey, subTopicAsQVariantList());
@@ -223,20 +223,6 @@ QVariantMap Topic::toCacheMap()
 	return toMap();
 }
 // ATT 
-// Optional: uuid
-QString Topic::uuid() const
-{
-	return mUuid;
-}
-
-void Topic::setUuid(QString uuid)
-{
-	if (uuid != mUuid) {
-		mUuid = uuid;
-		emit uuidChanged(uuid);
-	}
-}
-// ATT 
 // Mandatory: id
 // Domain KEY: id
 int Topic::id() const
@@ -249,6 +235,20 @@ void Topic::setId(int id)
 	if (id != mId) {
 		mId = id;
 		emit idChanged(id);
+	}
+}
+// ATT 
+// Optional: uuid
+QString Topic::uuid() const
+{
+	return mUuid;
+}
+
+void Topic::setUuid(QString uuid)
+{
+	if (uuid != mUuid) {
+		mUuid = uuid;
+		emit uuidChanged(uuid);
 	}
 }
 // ATT 

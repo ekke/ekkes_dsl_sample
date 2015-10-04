@@ -1,0 +1,58 @@
+[
+{
+	"nr" : 42,
+	"state" : 1,
+	"title" : "Xtext",
+	"positions" : [
+		{
+			"posNr" : 1,
+			"name" : "Position One",
+			"subItems" : [
+			{
+				"subPosNr" : 123,
+				"description":"one two three",
+				"barcode" : "12345678901"
+			},
+			{
+				"subPosNr" : 889,
+				"description":"eight eight nine",
+				"barcode" : "A23C042"
+			}	
+			]
+		},
+		{
+			"posNr" : 2,
+			"name" : "TWO"
+		}
+	],
+	"info": {
+		"remarks" : "My remarks"
+	},
+	"customerId" : 22,
+	"depId" : 1,
+	"topicId" : 2
+},
+{
+	"nr" : 4711,
+	"state" : 1,
+	"title" : "DSL",
+	"positions" : [
+		{
+			"posNr" : 1,
+			"name" : "Cascades"
+		},
+		{
+			"posNr" : 2,
+			"name" : "QML"
+		}
+	],
+	"customerId" : 22,
+	"depId" : 2,
+	"topicId" : 4,
+	"domains" : [
+		"IT",
+		"Hardware",
+		"Software"
+	]
+}
+]

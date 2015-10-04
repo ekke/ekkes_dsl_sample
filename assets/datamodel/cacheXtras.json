@@ -1,0 +1,31 @@
+[
+	{
+		"id" : 1,
+		"name" : "cities",
+		"text" : [
+			"Hamburg",
+			"Hannover",
+			"München"
+		],
+		"values" : [
+			42,
+			4711
+		]
+	},
+	{
+		"id" : 2,
+		"name" : "countries",
+		"text" : [
+			"Germany",
+			"Austria",
+			"France",
+			"Italy",
+			"Greece"
+		],
+		"values" : [
+			12000,
+			50,
+			21345
+		]
+	}
+]

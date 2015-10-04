@@ -12,8 +12,8 @@ class Topic: public QObject
 {
 	Q_OBJECT
 
-	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(int id READ id WRITE setId NOTIFY idChanged FINAL)
+	Q_PROPERTY(QString uuid READ uuid WRITE setUuid NOTIFY uuidChanged FINAL)
 	Q_PROPERTY(QString classification READ classification WRITE setClassification NOTIFY classificationChanged FINAL)
 	Q_PROPERTY(Topic* parentTopic READ parentTopic WRITE setParentTopic NOTIFY parentTopicChanged FINAL)
 
@@ -37,10 +37,10 @@ public:
 	QVariantMap toForeignMap();
 	QVariantMap toCacheMap();
 
-	QString uuid() const;
-	void setUuid(QString uuid);
 	int id() const;
 	void setId(int id);
+	QString uuid() const;
+	void setUuid(QString uuid);
 	QString classification() const;
 	void setClassification(QString classification);
 	Topic* parentTopic() const;
@@ -100,8 +100,8 @@ public:
 
 	Q_SIGNALS:
 
-	void uuidChanged(QString uuid);
 	void idChanged(int id);
+	void uuidChanged(QString uuid);
 	void classificationChanged(QString classification);
 	void parentTopicChanged(Topic* parentTopic);
 	void parentTopicDeleted(QString uuid);
@@ -114,8 +114,8 @@ public:
 
 private:
 
-	QString mUuid;
 	int mId;
+	QString mUuid;
 	QString mClassification;
 	Topic* mParentTopic;
 	QList<Topic*> mSubTopic;

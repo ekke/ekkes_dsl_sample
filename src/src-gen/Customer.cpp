@@ -3,14 +3,12 @@
 #include <quuid.h>
 
 // keys of QVariantMap used in this APP
-static const QString uuidKey = "uuid";
 static const QString idKey = "id";
 static const QString companyNameKey = "companyName";
 static const QString coordinateKey = "coordinate";
 static const QString geoAddressKey = "geoAddress";
 
 // keys used from Server API etc
-static const QString uuidForeignKey = "uuid";
 static const QString idForeignKey = "id";
 static const QString companyNameForeignKey = "companyName";
 static const QString coordinateForeignKey = "coordinate";
@@ -20,7 +18,7 @@ static const QString geoAddressForeignKey = "geoAddress";
  * Default Constructor if Customer not initialized from QVariantMap
  */
 Customer::Customer(QObject *parent) :
-        QObject(parent), mUuid(""), mId(-1), mCompanyName("")
+        QObject(parent), mId(-1), mCompanyName("")
 {
 	// set Types of DataObject* to NULL:
 	mCoordinate = 0;
@@ -38,12 +36,6 @@ Customer::Customer(QObject *parent) :
  */
 void Customer::fillFromMap(const QVariantMap& customerMap)
 {
-	mUuid = customerMap.value(uuidKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mId = customerMap.value(idKey).toInt();
 	mCompanyName = customerMap.value(companyNameKey).toString();
 	// mCoordinate points to GeoCoordinate*
@@ -78,12 +70,6 @@ void Customer::fillFromMap(const QVariantMap& customerMap)
  */
 void Customer::fillFromForeignMap(const QVariantMap& customerMap)
 {
-	mUuid = customerMap.value(uuidForeignKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mId = customerMap.value(idForeignKey).toInt();
 	mCompanyName = customerMap.value(companyNameForeignKey).toString();
 	// mCoordinate points to GeoCoordinate*
@@ -118,12 +104,6 @@ void Customer::fillFromForeignMap(const QVariantMap& customerMap)
  */
 void Customer::fillFromCacheMap(const QVariantMap& customerMap)
 {
-	mUuid = customerMap.value(uuidKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mId = customerMap.value(idKey).toInt();
 	mCompanyName = customerMap.value(companyNameKey).toString();
 	// mCoordinate points to GeoCoordinate*
@@ -150,9 +130,6 @@ void Customer::fillFromCacheMap(const QVariantMap& customerMap)
 
 void Customer::prepareNew()
 {
-	mUuid = QUuid::createUuid().toString();
-	mUuid = mUuid.right(mUuid.length() - 1);
-	mUuid = mUuid.left(mUuid.length() - 1);
 }
 
 /*
@@ -160,9 +137,6 @@ void Customer::prepareNew()
  */
 bool Customer::isValid()
 {
-	if (mUuid.isNull() || mUuid.isEmpty()) {
-		return false;
-	}
 	if (mId == -1) {
 		return false;
 	}
@@ -177,7 +151,6 @@ bool Customer::isValid()
 QVariantMap Customer::toMap()
 {
 	QVariantMap customerMap;
-	customerMap.insert(uuidKey, mUuid);
 	customerMap.insert(idKey, mId);
 	customerMap.insert(companyNameKey, mCompanyName);
 	// mCoordinate points to GeoCoordinate*
@@ -201,7 +174,6 @@ QVariantMap Customer::toMap()
 QVariantMap Customer::toForeignMap()
 {
 	QVariantMap customerMap;
-	customerMap.insert(uuidForeignKey, mUuid);
 	customerMap.insert(idForeignKey, mId);
 	customerMap.insert(companyNameForeignKey, mCompanyName);
 	// mCoordinate points to GeoCoordinate*
@@ -228,20 +200,6 @@ QVariantMap Customer::toCacheMap()
 	// no transient properties found from data model
 	// use default toMao()
 	return toMap();
-}
-// ATT 
-// Optional: uuid
-QString Customer::uuid() const
-{
-	return mUuid;
-}
-
-void Customer::setUuid(QString uuid)
-{
-	if (uuid != mUuid) {
-		mUuid = uuid;
-		emit uuidChanged(uuid);
-	}
 }
 // ATT 
 // Mandatory: id

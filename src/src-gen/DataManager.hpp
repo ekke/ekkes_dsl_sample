@@ -2,6 +2,7 @@
 #define DATAMANAGER_HPP_
 
 #include <qobject.h>
+#include <QStringList>
 #include <QtSql/QtSql>
 
 #include "Order.hpp"
@@ -13,8 +14,8 @@
 #include "Department.hpp"
 #include "Tag.hpp"
 #include "Xtras.hpp"
-#include  "GeoCoordinate.hpp"
-#include  "GeoAddress.hpp"
+#include "../GeoCoordinate.hpp"
+#include  "../GeoAddress.hpp"
 
 class DataManager: public QObject
 {
@@ -84,12 +85,6 @@ public:
 	bool deleteOrder(Order* order);
 
 	Q_INVOKABLE
-	bool deleteOrderByUuid(const QString& uuid);
-
-	Q_INVOKABLE
-	Order* findOrderByUuid(const QString& uuid);
-
-	Q_INVOKABLE
 	bool deleteOrderByNr(const int& nr);
 
 	Q_INVOKABLE
@@ -139,12 +134,6 @@ public:
 
 	Q_INVOKABLE
 	bool deleteCustomer(Customer* customer);
-
-	Q_INVOKABLE
-	bool deleteCustomerByUuid(const QString& uuid);
-
-	Q_INVOKABLE
-	Customer* findCustomerByUuid(const QString& uuid);
 
 	Q_INVOKABLE
 	bool deleteCustomerById(const int& id);
@@ -354,12 +343,6 @@ public:
 	bool deleteXtras(Xtras* xtras);
 
 	Q_INVOKABLE
-	bool deleteXtrasByUuid(const QString& uuid);
-
-	Q_INVOKABLE
-	Xtras* findXtrasByUuid(const QString& uuid);
-
-	Q_INVOKABLE
 	bool deleteXtrasById(const int& id);
 
 	Q_INVOKABLE
@@ -379,11 +362,9 @@ public:
 Q_SIGNALS:
 
 	void addedToAllOrder(Order* order);
-	void deletedFromAllOrderByUuid(QString uuid);
 	void deletedFromAllOrderByNr(int nr);
 	void deletedFromAllOrder(Order* order);
 	void addedToAllCustomer(Customer* customer);
-	void deletedFromAllCustomerByUuid(QString uuid);
 	void deletedFromAllCustomerById(int id);
 	void deletedFromAllCustomer(Customer* customer);
 	void addedToAllTopic(Topic* topic);
@@ -398,7 +379,6 @@ Q_SIGNALS:
 	void deletedFromAllTagByUuid(QString uuid);
 	void deletedFromAllTag(Tag* tag);
 	void addedToAllXtras(Xtras* xtras);
-	void deletedFromAllXtrasByUuid(QString uuid);
 	void deletedFromAllXtrasById(int id);
 	void deletedFromAllXtras(Xtras* xtras);
     

@@ -4,13 +4,11 @@ package org.ekkescorner.dsl.qobject.sample.data {
 	import org.lunifera.dsl.ext.cpp.qt.lib.types.annotation.*;
 	
 	dto Order {
-		var QString uuid;
 		domainKey int nr;
 		var bool expressOrder;
 		var QString[1] title;
 		@DateFormatString("yyyy-MM-dd")
 		var Date[1] orderDate;
-		@ForeignPropertyName("STATUS")
 		var OrderState state;
 		
 		transient int processingState;
@@ -53,7 +51,6 @@ package org.ekkescorner.dsl.qobject.sample.data {
 	}
 	
 	dto Customer {
-		var QString uuid;
 		domainKey int id;
 		@Index("")
 		var QString companyName;
@@ -69,8 +66,8 @@ package org.ekkescorner.dsl.qobject.sample.data {
 	}
 	
 	dto Topic {
-		var QString uuid;
 		domainKey int id;
+		var QString uuid;
 		var QString classification;
 		
 		ref Topic[0..*] subTopic;
@@ -79,8 +76,8 @@ package org.ekkescorner.dsl.qobject.sample.data {
 	
 	@CachePolicy("-R-")
 	dto Department {
-		var QString uuid;
 		domainKey int id;
+		var QString uuid;
 		var QString name;
 		
 		ref Department[0..1] parentDep opposite children;
@@ -97,7 +94,6 @@ package org.ekkescorner.dsl.qobject.sample.data {
 	}
 	
 	dto Xtras {
-		var QString uuid;
 		domainKey int id;
 		var QString name;
 		

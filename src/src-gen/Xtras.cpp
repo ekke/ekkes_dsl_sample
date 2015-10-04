@@ -3,14 +3,12 @@
 #include <quuid.h>
 
 // keys of QVariantMap used in this APP
-static const QString uuidKey = "uuid";
 static const QString idKey = "id";
 static const QString nameKey = "name";
 static const QString textKey = "text";
 static const QString valuesKey = "values";
 
 // keys used from Server API etc
-static const QString uuidForeignKey = "uuid";
 static const QString idForeignKey = "id";
 static const QString nameForeignKey = "name";
 static const QString textForeignKey = "text";
@@ -20,7 +18,7 @@ static const QString valuesForeignKey = "values";
  * Default Constructor if Xtras not initialized from QVariantMap
  */
 Xtras::Xtras(QObject *parent) :
-        QObject(parent), mUuid(""), mId(-1), mName("")
+        QObject(parent), mId(-1), mName("")
 {
 }
 
@@ -33,12 +31,6 @@ Xtras::Xtras(QObject *parent) :
  */
 void Xtras::fillFromMap(const QVariantMap& xtrasMap)
 {
-	mUuid = xtrasMap.value(uuidKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mId = xtrasMap.value(idKey).toInt();
 	mName = xtrasMap.value(nameKey).toString();
 	mTextStringList = xtrasMap.value(textKey).toStringList();
@@ -59,12 +51,6 @@ void Xtras::fillFromMap(const QVariantMap& xtrasMap)
  */
 void Xtras::fillFromForeignMap(const QVariantMap& xtrasMap)
 {
-	mUuid = xtrasMap.value(uuidForeignKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mId = xtrasMap.value(idForeignKey).toInt();
 	mName = xtrasMap.value(nameForeignKey).toString();
 	mTextStringList = xtrasMap.value(textForeignKey).toStringList();
@@ -85,12 +71,6 @@ void Xtras::fillFromForeignMap(const QVariantMap& xtrasMap)
  */
 void Xtras::fillFromCacheMap(const QVariantMap& xtrasMap)
 {
-	mUuid = xtrasMap.value(uuidKey).toString();
-	if (mUuid.isEmpty()) {
-		mUuid = QUuid::createUuid().toString();
-		mUuid = mUuid.right(mUuid.length() - 1);
-		mUuid = mUuid.left(mUuid.length() - 1);
-	}	
 	mId = xtrasMap.value(idKey).toInt();
 	mName = xtrasMap.value(nameKey).toString();
 	mTextStringList = xtrasMap.value(textKey).toStringList();
@@ -105,9 +85,6 @@ void Xtras::fillFromCacheMap(const QVariantMap& xtrasMap)
 
 void Xtras::prepareNew()
 {
-	mUuid = QUuid::createUuid().toString();
-	mUuid = mUuid.right(mUuid.length() - 1);
-	mUuid = mUuid.left(mUuid.length() - 1);
 }
 
 /*
@@ -115,9 +92,6 @@ void Xtras::prepareNew()
  */
 bool Xtras::isValid()
 {
-	if (mUuid.isNull() || mUuid.isEmpty()) {
-		return false;
-	}
 	if (mId == -1) {
 		return false;
 	}
@@ -132,7 +106,6 @@ bool Xtras::isValid()
 QVariantMap Xtras::toMap()
 {
 	QVariantMap xtrasMap;
-	xtrasMap.insert(uuidKey, mUuid);
 	xtrasMap.insert(idKey, mId);
 	xtrasMap.insert(nameKey, mName);
 	// Array of QString
@@ -150,7 +123,6 @@ QVariantMap Xtras::toMap()
 QVariantMap Xtras::toForeignMap()
 {
 	QVariantMap xtrasMap;
-	xtrasMap.insert(uuidForeignKey, mUuid);
 	xtrasMap.insert(idForeignKey, mId);
 	xtrasMap.insert(nameForeignKey, mName);
 	// Array of QString
@@ -171,20 +143,6 @@ QVariantMap Xtras::toCacheMap()
 	// no transient properties found from data model
 	// use default toMao()
 	return toMap();
-}
-// ATT 
-// Optional: uuid
-QString Xtras::uuid() const
-{
-	return mUuid;
-}
-
-void Xtras::setUuid(QString uuid)
-{
-	if (uuid != mUuid) {
-		mUuid = uuid;
-		emit uuidChanged(uuid);
-	}
 }
 // ATT 
 // Mandatory: id
